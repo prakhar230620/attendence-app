@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reports - Student Attendance System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Attendance Reports</h1>
+        <nav>
+            <a href="{{ url_for('dashboard') }}" class="btn">Dashboard</a>
+            <a href="{{ url_for('report') }}" class="btn">View Reports</a>
+            <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2>Attendance Report</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Roll No</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td>{{ report[0] }}</td>
+                    <td>{{ report[1] }}</td>
+                    <td>{{ report[2].strftime('%Y-%m-%d') }}</td>
+                    <td>{{ report[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Student Attendance System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Teacher Dashboard</h1>
+        <nav>
+            <a href="{{ url_for('dashboard') }}" class="btn">Dashboard</a>
+            <a href="{{ url_for('report') }}" class="btn">View Reports</a>
+            <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2>Mark Attendance</h2>
+        <form method="POST" action="{{ url_for('attendance') }}">
+            <div class="form-group">
+                <input type="date" name="date" required value="{{ today_date }}">
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select-all">
+                            Select All
+                        </th>
+                        <th>Roll No</th>
+                        <th>Student Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="attendance" value="{{ student[0] }}">
+                        </td>
+                        <td>{{ student[2] }}</td>
+                        <td>{{ student[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn">Save Attendance</button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
